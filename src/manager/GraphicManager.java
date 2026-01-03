@@ -277,6 +277,24 @@ public class GraphicManager {
 			this.renderTaskList.add(task);
 		}
 	}
+
+	/**
+	 * Draw image with color manipulation.
+	 */
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, float r, float g, float b, float a) {
+		this.drawImage(img, x, y, sizeX, sizeY, direction, -sizeX, 0, true, r, g, b, a);
+	}
+
+	public void drawImage(Image img, int x, int y, int sizeX, int sizeY, boolean direction, double tx, double ty, boolean shouldRender, float r, float g, float b, float a) {
+		if (!LaunchSetting.isExpectedProcessingMode(LaunchSetting.HEADLESS_MODE)) return;
+		
+		this.drawImageInScreenData(img, x, y, sizeX, sizeY, direction, tx, ty);
+		
+		if (LaunchSetting.isExpectedProcessingMode(LaunchSetting.STANDARD_MODE) && shouldRender) {
+			ImageTask task = new ImageTask(img.getTextureId(), x, y, sizeX, sizeY, direction, r, g, b, a);
+			this.renderTaskList.add(task);
+		}
+	}
 	
 	public void drawImageScaled(Image img, int x, int y, float scale, boolean direction, boolean shouldRender) {
 		int sizeX = (int)(img.getWidth() * scale);

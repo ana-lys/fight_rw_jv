@@ -112,7 +112,8 @@ public class ResourceDrawer {
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
 					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront(),
-					-playerCharacters[i].getGraphicSizeX()/2, 0, shouldRender);
+					-playerCharacters[i].getGraphicSizeX()/2, 0, shouldRender,
+					1.0f, 0.5f, 0.5f, 1.0f);
 		}
 	}
 

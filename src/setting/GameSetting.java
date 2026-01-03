@@ -62,7 +62,7 @@ public class GameSetting {
      * ラウンド数の上限数．
      */
     // public static final int ROUND_MAX = 3;
-    public static int ROUND_MAX = 3;
+    public static int ROUND_MAX = 999999;
 
     /**
      * コンボ継続を判定するためのフレーム数．<br>

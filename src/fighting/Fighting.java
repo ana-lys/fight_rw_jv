@@ -379,8 +379,9 @@ public class Fighting {
 	 */
 	protected void detectionPush() {
     int displace0, displace1;
-
-    if (isCollision()) {
+	boolean debug_collision = false;
+    // if (isCollision()) {
+	if(isCollision() && debug_collision){
         int p1SpeedX = Math.abs(this.playerCharacters[0].getSpeedX());
         int p2SpeedX = Math.abs(this.playerCharacters[1].getSpeedX());
         
@@ -407,7 +408,8 @@ public class Fighting {
 	 * P1とP2のキャラクター位置が重なってしまった場合, 重ならないように各キャラクターの座標の更新処理を行う．
 	 */
 	protected void detectionFusion() {
-		if (isCollision()) {
+		boolean debug_fusion = false;
+		if (isCollision() && debug_fusion) {
 			int direction = 0;
 
 			// If first player is left

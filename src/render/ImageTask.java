@@ -41,6 +41,14 @@ public class ImageTask extends RenderTask {
 	 */
 	private boolean direction;
 
+	/**
+	 * Color components.
+	 */
+	private float red = 1.0f;
+	private float green = 1.0f;
+	private float blue = 1.0f;
+	private float alpha = 1.0f;
+
 	/** コンストラクタ */
 	public ImageTask() {
 		this.textureId = -1;
@@ -99,6 +107,17 @@ public class ImageTask extends RenderTask {
 	}
 
 	/**
+	 * ImageTask with color manipulation.
+	 */
+	public ImageTask(int id, int x, int y, int width, int height, boolean dir, float r, float g, float b, float a) {
+		this(id, x, y, width, height, dir);
+		this.red = r;
+		this.green = g;
+		this.blue = b;
+		this.alpha = a;
+	}
+
+	/**
 	 * 画像をレンダリングする．<br>
 	 * テクスチャを貼り付けた四角形を用意して画像をレンダリングする．
 	 */
@@ -108,6 +127,9 @@ public class ImageTask extends RenderTask {
 
 		// Bind the texture
 		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		// Set color
+		glColor4f(red, green, blue, alpha);
 
 		// Draw a textured quad.
 		glBegin(GL_QUADS);
@@ -147,6 +169,9 @@ public class ImageTask extends RenderTask {
 			}
 		}
 		glEnd();
+
+		// Reset color
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 		GL11.glDisable(GL_TEXTURE_2D);
 
