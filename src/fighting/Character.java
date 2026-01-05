@@ -2,16 +2,14 @@ package fighting;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 import enumerate.Action;
 import enumerate.State;
 import image.Image;
 import loader.ResourceLoader;
 import manager.SoundManager;
+import modifier.*;
 import setting.FlagSetting;
 import setting.GameSetting;
 import setting.LaunchSetting;
@@ -204,6 +202,12 @@ public class Character {
     private Attack[] projectileAttack2 =  new Attack[3];
     
     private HitArea preprocessedHitArea = new HitArea();
+
+    private List<ISustainableModifier> modifierOnRunning = new  ArrayList<>();
+
+    private int gravityMultiplier = 1;
+
+    private double attackDamageMultiplier = 1.0;
 
     /**
      * Class constructorï¼Ž
@@ -491,6 +495,28 @@ public class Character {
         this.preEnergy = 0;
     }
 
+    public void invokeExternalEvent(int eventId) {
+        switch(eventId) {
+            case 2:         // POWER_CORE
+                modifierOnRunning.add(new AttackDamageBooster(this, 2.0, 300));
+                break;
+            case 3:         // WIND_BOOTS
+                modifierOnRunning.add(new PushCharacter(this, 3, 300));
+                break;
+            case 9:         // GRAVITY_WELL
+                modifierOnRunning.add(new GravityChanger(this, 2, 300));
+                break;
+            case 11:        // MICRO_TORNADO
+                modifierOnRunning.add(new PositionRestrainer(
+                        this, 0.6, this.getX(), 300));
+                break;
+        }
+    }
+
+    public void processExternalEvent() {
+        modifierOnRunning.removeIf(mod -> !mod.sustain());
+    }
+
     /**
      * Updates character's information.
      */
@@ -511,6 +537,8 @@ public class Character {
         moveY(this.speedY);
         frictionEffect();
         gravityEffect();
+
+        processExternalEvent();
         
     	preprocessedHitArea = new HitArea(getHitAreaLeft(), getHitAreaRight(), getHitAreaTop(), getHitAreaBottom());
 
@@ -800,11 +828,15 @@ public class Character {
      */
     private void createAttackInstance() {
         Motion motion = this.motionList.get(this.action.ordinal());
+        int finalAttackDamage = (int)(motion.getAttackHitDamage() * attackDamageMultiplier);
+        int finalAttackGuardDamage = (int)(motion.getAttackGuardDamage() * attackDamageMultiplier);
 
         if (startActive(motion)) {
             this.attack = new Attack(motion.getAttackHitArea(), motion.getAttackSpeedX(), motion.getAttackSpeedY(),
-                    motion.getAttackStartUp(), motion.getAttackActive(), motion.getAttackHitDamage(),
-                    motion.getAttackGuardDamage(), motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
+                    motion.getAttackStartUp(), motion.getAttackActive(),
+                    finalAttackDamage,
+                    finalAttackGuardDamage,
+                    motion.getAttackStartAddEnergy(), motion.getAttackHitAddEnergy(),
                     motion.getAttackGuardAddEnergy(), motion.getAttackGiveEnergy(), motion.getAttackImpactX(),
                     motion.getAttackImpactY(), motion.getAttackGiveGuardRecov(), motion.getAttackType(),
                     motion.isAttackDownProp());
@@ -1480,6 +1512,22 @@ public class Character {
      */
     public boolean isSimulateProcess() {
         return this.isSimulateProcess;
+    }
+
+    public int getGravityMultiplier() {
+        return this.gravityMultiplier;
+    }
+
+    public void setGravityMultiplier(int value) {
+        this.gravityMultiplier = value;
+    }
+
+    public double getAttackDamageMultiplier() {
+        return this.attackDamageMultiplier;
+    }
+
+    public void setAttackDamageMultiplier(double value) {
+        this.attackDamageMultiplier = value;
     }
 
     public void close(){

@@ -190,12 +190,55 @@ public class Fighting {
 					&& event.getY() - event.getHitY() <= this.playerCharacters[i].getHitAreaBottom()
 					&& event.getY() + event.getHitY() >= this.playerCharacters[i].getHitAreaTop()) {
 				System.out.println("Event ID=" + event.getEventId() + " hit Player " + (i+1));
-				this.playerCharacters[i].hitPrimitive( 50 , 5 , event.getVx() > 0 ? 1 : -1);	
+
+				invokeEventEffect(this.playerCharacters[i], event);
+
 				iterator.remove();
 				break;
 			}
 		}
 	}
+
+    protected void invokeEventEffect(Character character, Event event) {
+        int eventType = event.getEventId();
+
+        final int FREEZE_ORB = 1;
+        final int POWER_CORE = 2;
+        final int WIND_BOOTS = 3;
+        final int SHIELD_STONE = 4;
+        final int CHAOS_MASK = 5;
+        final int SPACE_WARP = 6;
+        final int TIME_BOMB = 7;
+        final int FLAME_SPOUT = 8;
+        final int GRAVITY_WELL = 9;
+        final int SHOCK_PULSE = 10;
+        final int MICRO_TORNADO = 11;
+
+        switch (eventType) {
+            case FREEZE_ORB:
+                // Freeze Orb: Slow movement
+                break;
+            case SHIELD_STONE:
+                // Falling stones create cover
+                break;
+            case CHAOS_MASK:
+                // Random status effects
+                break;
+
+            // Connects to ISustainableModifier
+            case POWER_CORE:        // 2 Power Core: Damage boost
+            case WIND_BOOTS:        // 3 Push character x-axis
+            case GRAVITY_WELL:      // 9 heavier gravity
+            case MICRO_TORNADO:     // 11
+                character.invokeExternalEvent(eventType);
+                break;
+
+            // Instant events when collide
+            case SHOCK_PULSE:
+                character.hitPrimitive(30, 5, event.getVx() > 0 ? 1 : -1);
+                break;
+        }
+    }
 
 	/**
 	 * キー入力を基にアクションを実行する．
