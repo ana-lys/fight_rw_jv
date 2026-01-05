@@ -23,7 +23,7 @@ from typing import Dict, Set, Any, Optional
 import sys
 
 # Add src_python to path for protobuf
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../src_python'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../src_python'))
 try:
     import message_pb2
 except ImportError:

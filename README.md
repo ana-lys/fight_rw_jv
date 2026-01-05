@@ -7,43 +7,122 @@ This repository is a repository for the development of the 2D fighting game Figh
 ### About FightingICE ###
 FightingICE is a 2D fighting game used in the Fighting Game AI Competition (FTGAIC), an international competition that competes for the performance of fighting game AI certified by Computational Intelligence and Games (CIG).
 
-### Quickstart with Docker ###
-```sh
-docker run -it --rm -v ${PWD}/log:/app/log -p 31415:31415 ghcr.io/teamfightingice/fightingice
+---
+
+## Getting Started on Linux
+
+### Prerequisites
+- **Java 21 or higher** (OpenJDK recommended)
+- **Protocol Buffers compiler** (protoc)
+- **Graphics libraries** (OpenGL, X11)
+- **Python 3** (optional, for Python AI clients)
+
+### Quick Setup
+
+#### 1. Run the Setup Script
+The setup script will automatically check and install all required dependencies:
+
+```bash
+./setup-linux.sh
 ```
 
-### How to start development ###
-- Clone the project into your local workspace.
-- Download resources required for development from [here](https://github.com/TeamFightingICE/FightingICE/releases/download/v6.3/resources-6.3.zip) and extract into the root directory.
-- Add all libraries from `lib` into your project. (for LWJGL, please add only one native match with your OS)
+This script will:
+- ✓ Check for Java 21+ and install if missing
+- ✓ Install Protocol Buffers compiler
+- ✓ Install required graphics libraries (OpenGL, X11, etc.)
+- ✓ Install Python dependencies (if requirements.txt exists)
+- ✓ Make build and run scripts executable
 
-### Important contents ###
-- data: Directory containing resources used in the game
-	- ai: Directory containing AI jar files used in the game (for version 6.0 and later, internal use only)
-	- aiData: Directory containing data files required by AI (for version 6.0 and later, internal use only)
-	- characters: Directory containing character images and action parameter files
-	- graphics: Directory containing graphics such as backgrounds and hadouken
-	- sounds: Directory containing background music and sound effects
-- lib: Directory containing libraries required for startup
-- protos: Directory containing protocal buffer codes
-- src: Directory containing source code
+#### 2. Build the Game
+After setup is complete, compile the game:
 
-### Java libraries in use ###
-- lwjgl: Containing libraries related to LWJGL module
-	- natives: Containing libraries related to LWJGL module native to many architectures.
-		- linux/amd64: for Linux
-		- linux/arm64: for Linux with ARM-architecture CPU
-		- macos/arm64: for macOS with Apple chip
-		- windows/amd64: for Windows
-	- lwjgl 3.3.3
-	- lwjgl-glfw 3.3.3
-	- lwjgl-openal 3.3.3
-	- lwjgl-opengl 3.3.3
-- failureaccess 1.0.1
-- guava 32.1.2-jre
-- jakarta.json-api 2.1.2
-- javax.annotation-api 1.3.2
-- lwjgl_util 2.9.3
-- perfmark-api 0.26.0
-- protobuf-java 3.24.3
-- protobuf-java-util 3.24.3
+```bash
+./build-linux.sh
+```
+
+This will:
+- Generate Protocol Buffers files for Java and Python
+- Compile all Java source files
+- Output compiled classes to the `bin` directory
+
+#### 3. Run the Game
+Launch FightingICE:
+
+```bash
+./run-linux.sh
+```
+
+You can also pass additional arguments:
+```bash
+./run-linux.sh [arguments]
+```
+
+---
+
+## Python Development
+
+### Setting Up Python Environment
+
+The project includes Python components for AI clients and the Twitch extension. It's recommended to use a virtual environment.
+
+#### 1. Activate Virtual Environment
+If you ran `./setup-linux.sh`, a virtual environment was created at `./venv`. Activate it:
+
+```bash
+source venv/bin/activate
+```
+
+You should see `(venv)` in your terminal prompt.
+
+#### 2. Manual Virtual Environment Creation
+If you need to create a virtual environment manually:
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+#### 3. Running Python Scripts
+
+**Demo Event Injector:**
+```bash
+source venv/bin/activate
+python src_python/demo_event.py
+```
+
+**Twitch Extension Server:**
+```bash
+source venv/bin/activate
+python Twitch-extension/python_server_deploy.py
+```
+
+**Custom AI Scripts:**
+```bash
+source venv/bin/activate
+python your_ai_script.py
+```
+
+#### 4. Deactivate Virtual Environment
+When done:
+
+```bash
+deactivate
+```
+
+### Python Dependencies
+
+The project uses:
+- `protobuf>=4.21.0` - Protocol Buffers for game communication
+- `aiohttp>=3.9.0` - Async HTTP server (Twitch extension)
+- `aiohttp-cors>=0.7.0` - CORS support
+- `twitchio>=2.5.0,<2.9.0` - Twitch chat integration
+- `certifi>=2023.7.22` - SSL certificate handling
+
+See [requirements.txt](requirements.txt) for the complete list.
+

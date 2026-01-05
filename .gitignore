@@ -57,14 +57,18 @@ venv/
 .env
 *_pb2.py
 *_pb2_grpc.py
+__pycache__/
 
 ### Build Artifacts ###
 sources.txt
 
 ### IDE Files ###
 DareFightingICE/.project
+.vscode/
 
-TWITCH/Twitch-extension/package_overlay.sh
+## Twitch log and zip
 
+Twitch-extension/package_overlay.sh
+Twitch-extension/spawn_log.jsonl
 
 
