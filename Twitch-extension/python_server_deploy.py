@@ -68,11 +68,11 @@ LOG_FILE = "spawn_log.jsonl"
 
 ITEMS: Dict[str, Dict[str, Any]] = {
     "lightning": {"emoji": "⚡", "label": "Lightning Storm", "impact_x": 5, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
-    "ice":       {"emoji": "❄️", "label": "Ice Shard", "impact_x": 5, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
-    "tornado":   {"emoji": "🌪️", "label": "Tornado", "impact_x": 15, "impact_y": -25, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
-    "fireball":  {"emoji": "🔥", "label": "Fireball", "impact_x": 25, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "ice":       {"emoji": "❄️", "label": "Ice Shard", "impact_x": 5, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 5},
+    "tornado":   {"emoji": "🌪️", "label": "Tornado", "impact_x": 15, "impact_y": -25, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 30},
+    "fireball":  {"emoji": "🔥", "label": "Fireball", "impact_x": 25, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 5},
     "water":     {"emoji": "🌊", "label": "Water Torrent", "impact_x": 5, "impact_y": -35, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
-    "blackhole": {"emoji": "⚫", "label": "Black Hole", "impact_x": 0, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 45},
+    "blackhole": {"emoji": "⚫", "label": "Black Hole", "impact_x": 0, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 60},
     "energy":    {"emoji": "🔮", "label": "Energy Orb", "impact_x": 5, "impact_y": 5, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
     "poison":    {"emoji": "☠️", "label": "Green Toxin", "impact_x": 0, "impact_y": 5, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 30},
 }
