@@ -66,15 +66,15 @@ TWITCH_CHANNEL = os.environ.get("TWITCH_CHANNEL", "aigameapg").strip()
 
 LOG_FILE = "spawn_log.jsonl"
 
-ITEMS: Dict[str, Dict[str, str]] = {
-    "freeze":  {"emoji": "🧊", "label": "Freeze Orb"},
-    "fire":    {"emoji": "🔥", "label": "Power Core"},
-    "wind":    {"emoji": "💨", "label": "Wind Boots"},
-    "shield":  {"emoji": "🧱", "label": "Shield Stone"},
-    "chaos":   {"emoji": "🎭", "label": "Chaos Mask"},
-    "warp":    {"emoji": "🌀", "label": "Space Warp"},
-    "bomb":    {"emoji": "⏳", "label": "Time Bomb"},
-    "spout":   {"emoji": "🌋", "label": "Flame Spout"},
+ITEMS: Dict[str, Dict[str, Any]] = {
+    "lightning": {"emoji": "⚡", "label": "Lightning Storm", "impact_x": 5, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "ice":       {"emoji": "❄️", "label": "Ice Shard", "impact_x": 5, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "tornado":   {"emoji": "🌪️", "label": "Tornado", "impact_x": 15, "impact_y": -25, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "fireball":  {"emoji": "🔥", "label": "Fireball", "impact_x": 25, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "water":     {"emoji": "🌊", "label": "Water Torrent", "impact_x": 5, "impact_y": -35, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "blackhole": {"emoji": "⚫", "label": "Black Hole", "impact_x": 0, "impact_y": 0, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 45},
+    "energy":    {"emoji": "🔮", "label": "Energy Orb", "impact_x": 5, "impact_y": 5, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 15},
+    "poison":    {"emoji": "☠️", "label": "Green Toxin", "impact_x": 0, "impact_y": 5, "damage": 10, "hx": 50, "hy": 50, "hit_countdown": 30},
 }
 
 # =========================
@@ -108,14 +108,14 @@ game_event_id = 0
 active_mouse_start = (0, 0)
 
 ITEM_TYPE_MAP = {
-    "freeze": 1,
-    "fire": 2,
-    "wind": 3,
-    "shield": 4,
-    "chaos": 5,
-    "warp": 6,
-    "bomb": 7,
-    "spout": 8
+    "lightning": 1,
+    "ice": 2,
+    "tornado": 3,
+    "fireball": 4,
+    "water": 5,
+    "blackhole": 6,
+    "energy": 7,
+    "poison": 8
 }
 
 
@@ -294,7 +294,7 @@ async def connect_game_socket():
         print(f"Game connection failed: {e}")
         game_writer = None
 
-async def send_game_event(event_type, x, y, vx, vy, terminate):
+async def send_game_event(event_type, x, y, vx, vy, terminate, impact_x=5, impact_y=5, damage=10, hx=50, hy=50, hit_countdown=15):
     global game_writer, game_event_id
     if not message_pb2: return
     
@@ -312,12 +312,18 @@ async def send_game_event(event_type, x, y, vx, vy, terminate):
         event.vy = int(vy)
         event.time = 180
         event.terminate = terminate
+        event.impact_x = int(impact_x)
+        event.impact_y = int(impact_y)
+        event.damage = int(damage)
+        event.hx = int(hx)
+        event.hy = int(hy)
+        event.hit_countdown = int(hit_countdown)
         
         data = event.SerializeToString()
         game_writer.write(struct.pack('<I', len(data)))
         game_writer.write(data)
         await game_writer.drain()
-        print(f"Sent Game Event: Type={event_type}, X={x}, Y={y}, VX={vx}, VY={vy}, Term={terminate}")
+        print(f"Sent Game Event: Type={event_type}, X={x}, Y={y}, VX={vx}, VY={vy}, Term={terminate}, D={damage}, CD={hit_countdown}")
 
         if terminate:
             game_event_id += 1
@@ -348,9 +354,17 @@ async def handle_game_mouse_event(m_state, x, y, ws):
         vy = int(dy / 20)
         
         item_key = pending_placement.get("item_key")
-        item_type = max(min(ITEM_TYPE_MAP.get(item_key, 1),5),0)
+        item_type = max(min(ITEM_TYPE_MAP.get(item_key, 1),8),0)
         
-        await send_game_event(item_type, start_x, start_y, vx, vy, True)
+        item_data = ITEMS.get(item_key, {})
+        impact_x = item_data.get("impact_x", 5)
+        impact_y = item_data.get("impact_y", 5)
+        damage = item_data.get("damage", 10)
+        hx = item_data.get("hx", 50)
+        hy = item_data.get("hy", 50)
+        hit_countdown = item_data.get("hit_countdown", 15)
+        
+        await send_game_event(item_type, start_x, start_y, vx, vy, True, impact_x, impact_y, damage, hx, hy, hit_countdown)
 
 # =========================
 # Rounds loop

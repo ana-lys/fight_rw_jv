@@ -12327,6 +12327,30 @@ public final class MessageProto {
      * @return The terminate.
      */
     boolean getTerminate();
+
+    /**
+     * <code>int32 impact_x = 11;</code>
+     * @return The impactX.
+     */
+    int getImpactX();
+
+    /**
+     * <code>int32 impact_y = 12;</code>
+     * @return The impactY.
+     */
+    int getImpactY();
+
+    /**
+     * <code>int32 damage = 13;</code>
+     * @return The damage.
+     */
+    int getDamage();
+
+    /**
+     * <code>int32 hit_countdown = 14;</code>
+     * @return The hitCountdown.
+     */
+    int getHitCountdown();
   }
   /**
    * Protobuf type {@code service.GrpcGameEvent}
@@ -12478,6 +12502,50 @@ public final class MessageProto {
       return terminate_;
     }
 
+    public static final int IMPACT_X_FIELD_NUMBER = 11;
+    private int impactX_ = 0;
+    /**
+     * <code>int32 impact_x = 11;</code>
+     * @return The impactX.
+     */
+    @java.lang.Override
+    public int getImpactX() {
+      return impactX_;
+    }
+
+    public static final int IMPACT_Y_FIELD_NUMBER = 12;
+    private int impactY_ = 0;
+    /**
+     * <code>int32 impact_y = 12;</code>
+     * @return The impactY.
+     */
+    @java.lang.Override
+    public int getImpactY() {
+      return impactY_;
+    }
+
+    public static final int DAMAGE_FIELD_NUMBER = 13;
+    private int damage_ = 0;
+    /**
+     * <code>int32 damage = 13;</code>
+     * @return The damage.
+     */
+    @java.lang.Override
+    public int getDamage() {
+      return damage_;
+    }
+
+    public static final int HIT_COUNTDOWN_FIELD_NUMBER = 14;
+    private int hitCountdown_ = 0;
+    /**
+     * <code>int32 hit_countdown = 14;</code>
+     * @return The hitCountdown.
+     */
+    @java.lang.Override
+    public int getHitCountdown() {
+      return hitCountdown_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -12521,6 +12589,18 @@ public final class MessageProto {
       }
       if (terminate_ != false) {
         output.writeBool(10, terminate_);
+      }
+      if (impactX_ != 0) {
+        output.writeInt32(11, impactX_);
+      }
+      if (impactY_ != 0) {
+        output.writeInt32(12, impactY_);
+      }
+      if (damage_ != 0) {
+        output.writeInt32(13, damage_);
+      }
+      if (hitCountdown_ != 0) {
+        output.writeInt32(14, hitCountdown_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -12571,6 +12651,22 @@ public final class MessageProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(10, terminate_);
       }
+      if (impactX_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(11, impactX_);
+      }
+      if (impactY_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(12, impactY_);
+      }
+      if (damage_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(13, damage_);
+      }
+      if (hitCountdown_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(14, hitCountdown_);
+      }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
       return size;
@@ -12606,6 +12702,14 @@ public final class MessageProto {
           != other.getHy()) return false;
       if (getTerminate()
           != other.getTerminate()) return false;
+      if (getImpactX()
+          != other.getImpactX()) return false;
+      if (getImpactY()
+          != other.getImpactY()) return false;
+      if (getDamage()
+          != other.getDamage()) return false;
+      if (getHitCountdown()
+          != other.getHitCountdown()) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -12638,6 +12742,14 @@ public final class MessageProto {
       hash = (37 * hash) + TERMINATE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getTerminate());
+      hash = (37 * hash) + IMPACT_X_FIELD_NUMBER;
+      hash = (53 * hash) + getImpactX();
+      hash = (37 * hash) + IMPACT_Y_FIELD_NUMBER;
+      hash = (53 * hash) + getImpactY();
+      hash = (37 * hash) + DAMAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getDamage();
+      hash = (37 * hash) + HIT_COUNTDOWN_FIELD_NUMBER;
+      hash = (53 * hash) + getHitCountdown();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -12777,6 +12889,10 @@ public final class MessageProto {
         hx_ = 0;
         hy_ = 0;
         terminate_ = false;
+        impactX_ = 0;
+        impactY_ = 0;
+        damage_ = 0;
+        hitCountdown_ = 0;
         return this;
       }
 
@@ -12839,6 +12955,18 @@ public final class MessageProto {
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
           result.terminate_ = terminate_;
+        }
+        if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.impactX_ = impactX_;
+        }
+        if (((from_bitField0_ & 0x00000800) != 0)) {
+          result.impactY_ = impactY_;
+        }
+        if (((from_bitField0_ & 0x00001000) != 0)) {
+          result.damage_ = damage_;
+        }
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          result.hitCountdown_ = hitCountdown_;
         }
       }
 
@@ -12916,6 +13044,18 @@ public final class MessageProto {
         if (other.getTerminate() != false) {
           setTerminate(other.getTerminate());
         }
+        if (other.getImpactX() != 0) {
+          setImpactX(other.getImpactX());
+        }
+        if (other.getImpactY() != 0) {
+          setImpactY(other.getImpactY());
+        }
+        if (other.getDamage() != 0) {
+          setDamage(other.getDamage());
+        }
+        if (other.getHitCountdown() != 0) {
+          setHitCountdown(other.getHitCountdown());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -12992,6 +13132,26 @@ public final class MessageProto {
                 bitField0_ |= 0x00000200;
                 break;
               } // case 80
+              case 88: {
+                impactX_ = input.readInt32();
+                bitField0_ |= 0x00000400;
+                break;
+              } // case 88
+              case 96: {
+                impactY_ = input.readInt32();
+                bitField0_ |= 0x00000800;
+                break;
+              } // case 96
+              case 104: {
+                damage_ = input.readInt32();
+                bitField0_ |= 0x00001000;
+                break;
+              } // case 104
+              case 112: {
+                hitCountdown_ = input.readInt32();
+                bitField0_ |= 0x00002000;
+                break;
+              } // case 112
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -13328,6 +13488,134 @@ public final class MessageProto {
         onChanged();
         return this;
       }
+
+      private int impactX_ ;
+      /**
+       * <code>int32 impact_x = 11;</code>
+       * @return The impactX.
+       */
+      @java.lang.Override
+      public int getImpactX() {
+        return impactX_;
+      }
+      /**
+       * <code>int32 impact_x = 11;</code>
+       * @param value The impactX to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImpactX(int value) {
+        
+        impactX_ = value;
+        bitField0_ |= 0x00000400;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 impact_x = 11;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearImpactX() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        impactX_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int impactY_ ;
+      /**
+       * <code>int32 impact_y = 12;</code>
+       * @return The impactY.
+       */
+      @java.lang.Override
+      public int getImpactY() {
+        return impactY_;
+      }
+      /**
+       * <code>int32 impact_y = 12;</code>
+       * @param value The impactY to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImpactY(int value) {
+        
+        impactY_ = value;
+        bitField0_ |= 0x00000800;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 impact_y = 12;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearImpactY() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        impactY_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int damage_ ;
+      /**
+       * <code>int32 damage = 13;</code>
+       * @return The damage.
+       */
+      @java.lang.Override
+      public int getDamage() {
+        return damage_;
+      }
+      /**
+       * <code>int32 damage = 13;</code>
+       * @param value The damage to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDamage(int value) {
+        
+        damage_ = value;
+        bitField0_ |= 0x00001000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 damage = 13;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDamage() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        damage_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int hitCountdown_ ;
+      /**
+       * <code>int32 hit_countdown = 14;</code>
+       * @return The hitCountdown.
+       */
+      @java.lang.Override
+      public int getHitCountdown() {
+        return hitCountdown_;
+      }
+      /**
+       * <code>int32 hit_countdown = 14;</code>
+       * @param value The hitCountdown to set.
+       * @return This builder for chaining.
+       */
+      public Builder setHitCountdown(int value) {
+        
+        hitCountdown_ = value;
+        bitField0_ |= 0x00002000;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 hit_countdown = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearHitCountdown() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        hitCountdown_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -13505,13 +13793,14 @@ public final class MessageProto {
       "\001 \001(\005\022\025\n\rremaining_hps\030\002 \003(\005\022\025\n\relapsed_" +
       "frame\030\003 \001(\005\"V\n\007GrpcKey\022\t\n\001A\030\001 \001(\010\022\t\n\001B\030\002" +
       " \001(\010\022\t\n\001C\030\003 \001(\010\022\t\n\001U\030\004 \001(\010\022\t\n\001R\030\005 \001(\010\022\t\n" +
-      "\001D\030\006 \001(\010\022\t\n\001L\030\007 \001(\010\"\234\001\n\rGrpcGameEvent\022\020\n" +
+      "\001D\030\006 \001(\010\022\t\n\001L\030\007 \001(\010\"\347\001\n\rGrpcGameEvent\022\020\n" +
       "\010event_id\030\001 \001(\005\022\022\n\nevent_type\030\002 \001(\005\022\t\n\001x" +
       "\030\003 \001(\005\022\t\n\001y\030\004 \001(\005\022\n\n\002vx\030\005 \001(\005\022\n\n\002vy\030\006 \001(" +
       "\005\022\014\n\004time\030\007 \001(\005\022\n\n\002hx\030\010 \001(\005\022\n\n\002hy\030\t \001(\005\022" +
-      "\021\n\tterminate\030\n \001(\010B5\n\006protocB\014MessagePro" +
-      "toP\000\252\002\032DareFightingICE.Grpc.Protob\006proto" +
-      "3"
+      "\021\n\tterminate\030\n \001(\010\022\020\n\010impact_x\030\013 \001(\005\022\020\n\010" +
+      "impact_y\030\014 \001(\005\022\016\n\006damage\030\r \001(\005\022\025\n\rhit_co" +
+      "untdown\030\016 \001(\005B5\n\006protocB\014MessageProtoP\000\252" +
+      "\002\032DareFightingICE.Grpc.Protob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -13583,7 +13872,7 @@ public final class MessageProto {
     internal_static_service_GrpcGameEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_service_GrpcGameEvent_descriptor,
-        new java.lang.String[] { "EventId", "EventType", "X", "Y", "Vx", "Vy", "Time", "Hx", "Hy", "Terminate", });
+        new java.lang.String[] { "EventId", "EventType", "X", "Y", "Vx", "Vy", "Time", "Hx", "Hy", "Terminate", "ImpactX", "ImpactY", "Damage", "HitCountdown", });
     protoc.EnumProto.getDescriptor();
   }
 

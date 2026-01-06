@@ -108,12 +108,18 @@ public class ResourceDrawer {
 					+ (playerCharacters[i].getHitAreaRight() - playerCharacters[i].getHitAreaLeft()) / 3;
 			int positionY = playerCharacters[i].getHitAreaTop() - 50;
 
+            float r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;
+            if (playerCharacters[i].getHitColorDuration() > 0) {
+                float[] c = playerCharacters[i].getHitColor();
+                r = c[0]; g = c[1]; b = c[2]; a = c[3];
+            }
+
 			GraphicManager.getInstance().drawString(names[i], positionX, positionY, shouldRender);
 			GraphicManager.getInstance().drawImage(playerCharacters[i].getNowImage(), playerCharacters[i].getX(),
 					playerCharacters[i].getY(), playerCharacters[i].getGraphicSizeX(),
 					playerCharacters[i].getGraphicSizeY(), playerCharacters[i].isFront(),
 					-playerCharacters[i].getGraphicSizeX()/2, 0, shouldRender,
-					1.0f, 0.5f, 0.5f, 1.0f);
+					r, g, b, a);
 		}
 	}
 

@@ -146,20 +146,20 @@ public class Fighting {
 				System.out.println("Creating new event: ID=" + eventId + " Type=" + eventType);
 				Event newEvent = new Event(eventId, eventType);
 				newEvent.initialize(event.getX(), event.getY(), event.getVx(), event.getVy(),
-						event.getTime(), event.getHx(), event.getHy());
+						event.getTime(), event.getHx(), event.getHy(), event.getImpactX(), event.getImpactY(), event.getDamage(), event.getHitCountdown());
 				this.eventDeque.addLast(newEvent);
 			}
 			else{
 				if (!event.getTerminate()) {
 					targetEvent.initialize(event.getX(), event.getY(), event.getVx(), event.getVy(),
-						event.getTime(), event.getHx(), event.getHy());
+						event.getTime(), event.getHx(), event.getHy(), event.getImpactX(), event.getImpactY(), event.getDamage(), event.getHitCountdown());
 				}
 				else {
 					System.out.println("Replacing event: ID=" + eventId + " NewType=" + eventType);
 					this.eventDeque.remove(targetEvent);
 					Event newEvent = new Event(eventId, eventType);
 				    newEvent.initialize(event.getX(), event.getY(), event.getVx(), event.getVy(),
-						event.getTime(), event.getHx(), event.getHy());
+						event.getTime(), event.getHx(), event.getHy(), event.getImpactX(), event.getImpactY(), event.getDamage(), event.getHitCountdown());
 				    this.eventDeque.addLast(newEvent);
 				}
 				
@@ -179,20 +179,95 @@ public class Fighting {
 		iterator = this.eventDeque.iterator();
 		while (iterator.hasNext()) {
 			Event event_EXCUTE = iterator.next();
+			if (event_EXCUTE.getEventType() == 6) {
+				applyBlackholeEffect(event_EXCUTE);
+			}
 			EventHitPlayers(event_EXCUTE, iterator, currentFrame);
 		}
 	}
 
-	protected void EventHitPlayers(Event event, java.util.Iterator<Event> iterator, int currentFrame) {
+	protected void applyBlackholeEffect(Event event) {
 		for (int i = 0; i < 2; i++) {
+			// Skip if player is down or already being hit by this event?
+			// The prompt says "automatically pull players toward it".
+			
+			int dx = event.getX() - this.playerCharacters[i].getHitAreaCenterX();
+			int dist = Math.abs(dx);
+			int maxDist = 500; // Range of effect
+			
+			int speed = 5; // Min speed
+			if (dist < maxDist) {
+				// Linear scaling: 0 dist -> +15 speed (total 20), maxDist -> +0 speed (total 5)
+				speed += (int)((1.0 - (double)dist / maxDist) * 15);
+			}
+			
+			if (dist > 0) {
+				int dir = dx > 0 ? 1 : -1;
+				this.playerCharacters[i].moveX(speed * dir);
+			}
+		}
+	}
+
+	protected void EventHitPlayers(Event event, java.util.Iterator<Event> iterator, int currentFrame) {
+		/*
+		if (event.isHit()) {
+			return;
+		}
+		*/
+		if(event.getEventType() == 0){
+			return;
+		}
+		for (int i = 0; i < 2; i++) {
+			if (event.isHit(i)) continue; // Skip if already hit this player
+
 			if (event.getX() - event.getHitX() <= this.playerCharacters[i].getHitAreaRight()
 					&& event.getX() + event.getHitX() >= this.playerCharacters[i].getHitAreaLeft()
 					&& event.getY() - event.getHitY() <= this.playerCharacters[i].getHitAreaBottom()
 					&& event.getY() + event.getHitY() >= this.playerCharacters[i].getHitAreaTop()) {
 				System.out.println("Event ID=" + event.getEventId() + " hit Player " + (i+1));
-				this.playerCharacters[i].hitPrimitive( 50 , 5 , event.getVx() > 0 ? 1 : -1);	
-				iterator.remove();
-				break;
+				this.playerCharacters[i].hitPrimitive( event.getDamage(), event.getImpactX() , event.getImpactY() , event.getVx() > 0 ? 1 : -1);	
+				
+                float r1=1.0f, g1=1.0f, b1=1.0f, a1=1.0f;
+                float r2=1.0f, g2=1.0f, b2=1.0f, a2=1.0f;
+                
+                switch (event.getEventType()) {
+                    case 1: // Lightning (Yellow / Black)
+                        r1=1.5f; g1=1.5f; b1=0.0f; 
+                        r2=0.0f; g2=0.0f; b2=0.0f; 
+                        break; 
+                    case 2: // Ice (Cyan / White)
+                        r1=0.3f; g1=1.5f; b1=1.0f;
+                        r2=1.0f; g2=1.5f; b2=1.5f;
+                        break; 
+                    case 3: // Tornado (Gray / White)
+                        r1=0.5f; g1=0.5f; b1=0.5f;
+                        r2=0.8f; g2=0.8f; b2=0.8f;
+                        break; 
+                    case 4: // Fireball (Red / Orange)z
+                        r1=1.4f; g1=0.2f; b1=0.2f;
+                        r2=1.4f; g2=0.8f; b2=0.0f;
+                        break; 
+                    case 5: // Water (Blue / Cyan)
+                        r1=0.0f; g1=0.0f; b1=1.0f;
+                        r2=0.0f; g2=1.0f; b2=1.0f;
+                        break; 
+                    case 6: // Blackhole (Purple / Black)
+                        r1=0.5f; g1=0.0f; b1=0.5f;
+                        r2=0.2f; g2=0.0f; b2=0.2f;
+                        break; 
+                    case 7: // Energy (Cyan / Lime)
+						r1=0.0f; g1=1.0f; b1=1.0f;
+                        r2=0.0f; g2=1.0f; b2=0.0f;
+                        break; 
+                    case 8: // Poison (Green / Lime)
+						r1=0.0f; g1=1.0f; b1=0.0f;
+                        r2=0.5f; g2=1.0f; b2=0.0f;
+                        break; 
+                }
+                this.playerCharacters[i].setHitColor(r1, g1, b1, a1, r2, g2, b2, a2, 40);
+
+				event.setHit(i, true);
+				// break; // Don't break, allow hitting other player in same frame
 			}
 		}
 	}

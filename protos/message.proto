@@ -127,4 +127,8 @@ message GrpcGameEvent {
 	int32 hx = 8;
 	int32 hy = 9;
 	bool terminate = 10;
+	int32 impact_x = 11;
+	int32 impact_y = 12;
+	int32 damage = 13;
+	int32 hit_countdown = 14;
 }

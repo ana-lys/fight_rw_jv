@@ -1,4 +1,4 @@
-let SERVER_HOST = "https://spending-vector-mba-cannon.trycloudflare.com";
+let SERVER_HOST = "https://staffing-counted-tions-simply.trycloudflare.com";
 const WS_PATH = "/ws";
 
 // Configuration

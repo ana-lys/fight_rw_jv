@@ -205,8 +205,13 @@ public class Character {
     
     private HitArea preprocessedHitArea = new HitArea();
 
+    // Hit Color Effect
+    private int hitColorDuration = 0;
+    private float[] hitColor1 = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
+    private float[] hitColor2 = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
+
     /**
-     * Class constructorï¼Ž
+     * Class constructorï¼.
      */
     public Character() {
         initializeList();
@@ -495,6 +500,9 @@ public class Character {
      * Updates character's information.
      */
     public void update() {
+        if (this.hitColorDuration > 0) {
+            this.hitColorDuration--;
+        }
 
             // SIMPLE: No formatting needed
    
@@ -640,10 +648,11 @@ public class Character {
         }
     }
 
-    public void hitPrimitive( int damage , int impact , int direction) {
+    public void hitPrimitive( int damage , int impactX, int impactY , int direction) {
         setHp(this.hp - damage );
-        setSpeedX(direction * impact);
-        setEnergy(this.energy + 20);
+        setSpeedX(direction * impactX);
+        setSpeedY(impactY);
+        setEnergy(this.energy + 1);
         runAction(Action.CHANGE_DOWN, false);
         setRemainingFrame(this.motionList.get(this.action.ordinal()).getFrameNumber());
     }
@@ -1092,6 +1101,36 @@ public class Character {
      */
     public int getRemainingFrame() {
         return this.remainingFrame;
+    }
+
+    public void setHitColor(float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2, int duration) {
+        this.hitColor1[0] = r1; this.hitColor1[1] = g1; this.hitColor1[2] = b1; this.hitColor1[3] = a1;
+        this.hitColor2[0] = r2; this.hitColor2[1] = g2; this.hitColor2[2] = b2; this.hitColor2[3] = a2;
+        this.hitColorDuration = duration;
+    }
+    
+    public float[] getHitColor() {
+        // Alternating every 5 frames
+        // (duration / 5) % 2 == 0 -> Color 2 (since duration counts down)
+        // e.g. 40-36 (result 8, even) -> Color 1? No, 8 is even.
+        // Let's trace: 
+        // 40 / 5 = 8 (even)
+        // 35 / 5 = 7 (odd)
+        // 36... 36/5 = 7.2 (int 7) -> Odd
+        
+        // Let's use duration % 10. 
+        // 40,39,38,37,36 -> >5 -> Color 1
+        // 35,34,33,32,31 -> <=5 -> Color 2
+        
+        if ((this.hitColorDuration % 10) > 5) {
+            return this.hitColor1;
+        } else {
+            return this.hitColor2;
+        }
+    }
+    
+    public int getHitColorDuration() {
+        return this.hitColorDuration;
     }
 
     /**
